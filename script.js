@@ -59,40 +59,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Intersection Observer for Fade-in Animations
-const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Animate elements on scroll
-const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.capability-card, .why-card, .mission-card, .timeline-item, .client-logo-item');
-    
-    elements.forEach((el, index) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = `all 0.6s ease ${index * 0.1}s`;
-        observer.observe(el);
-    });
-};
-
-// Initialize animations after DOM is loaded
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', animateOnScroll);
-} else {
-    animateOnScroll();
-}
+// Intersection Observer for Fade-in Animations - DISABLED FOR INSTANT LOAD
+// Elements now show immediately without animation delays
 
 // Add scroll progress indicator
 const createScrollProgress = () => {
