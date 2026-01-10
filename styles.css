@@ -230,8 +230,7 @@ body {
     position: relative;
     z-index: 1;
     max-width: 900px;
-    /* disable initial hero reveal so content appears immediately */
-    animation: none !important;
+    animation: fadeInUp 1s ease-out;
 }
 
 @keyframes fadeInUp {
@@ -257,7 +256,7 @@ body {
     font-weight: 600;
     color: var(--primary-blue);
     margin-bottom: 32px;
-    animation: none !important;
+    animation: fadeInUp 1s ease-out 0.2s both;
 }
 
 .badge-icon {
@@ -275,10 +274,12 @@ body {
 
 .title-line {
     display: block;
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+    animation: fadeInUp 1s ease-out both;
 }
+
+.title-line:nth-child(1) { animation-delay: 0.3s; }
+.title-line:nth-child(2) { animation-delay: 0.4s; }
+.title-line:nth-child(3) { animation-delay: 0.5s; }
 
 .title-line.highlight {
     color: var(--primary-blue);
@@ -292,14 +293,14 @@ body {
     color: var(--text-secondary);
     max-width: 700px;
     margin-bottom: 40px;
-    animation: none !important;
+    animation: fadeInUp 1s ease-out 0.6s both;
 }
 
 .hero-cta {
     display: flex;
     gap: 16px;
     margin-bottom: 64px;
-    animation: none !important;
+    animation: fadeInUp 1s ease-out 0.7s both;
 }
 
 .btn {
@@ -343,14 +344,7 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 48px;
     max-width: 600px;
-    animation: none !important;
-}
-
-/* Ensure other reveal elements are visible immediately */
-.capability-card, .why-card, .mission-card, .timeline-item, .client-logo-item {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
+    animation: fadeInUp 1s ease-out 0.8s both;
 }
 
 .stat {
@@ -770,10 +764,60 @@ body {
     background: var(--warm-gray);
 }
 
-.clients-categories {
+.client-logos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.client-logo-item {
+    background: var(--white);
+    padding: 32px 40px;
+    border-radius: 12px;
     display: flex;
-    flex-direction: column;
-    gap: 64px;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(0, 59, 122, 0.08);
+    min-height: 140px;
+    position: relative;
+    overflow: hidden;
+}
+
+.client-logo-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(0, 59, 122, 0.02) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.client-logo-item:hover::before {
+    opacity: 1;
+}
+
+.client-logo-item:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-blue);
+}
+
+.client-logo {
+    max-width: 100%;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.7);
+    transition: all 0.4s ease;
+}
+
+.client-logo-item:hover .client-logo {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(1.05);
 }
 
 .category-title {
@@ -781,37 +825,6 @@ body {
     font-weight: 700;
     color: var(--primary-blue);
     margin-bottom: 32px;
-    text-align: center;
-}
-
-.client-logos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
-}
-
-.client-logo-item {
-    background: var(--white);
-    padding: 40px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    border: 2px solid rgba(0, 59, 122, 0.1);
-    min-height: 120px;
-}
-
-.client-logo-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-blue);
-}
-
-.logo-placeholder {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-secondary);
     text-align: center;
 }
 
@@ -1111,7 +1124,7 @@ body {
 .footer-logo {
     height: 56px;
     margin-bottom: 24px;
-    filter: none;
+    filter: brightness(0) invert(1);
 }
 
 .footer-tagline {
@@ -1287,8 +1300,18 @@ body {
         font-size: 24px;
     }
     
-    .client-logos {
-        grid-template-columns: 1fr;
+    .client-logos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .client-logo-item {
+        padding: 24px;
+        min-height: 100px;
+    }
+    
+    .client-logo {
+        max-height: 60px;
     }
     
     .why-grid {
@@ -1353,6 +1376,14 @@ body {
     
     .cert-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .client-logos-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .client-logo {
+        max-height: 70px;
     }
 }
 
