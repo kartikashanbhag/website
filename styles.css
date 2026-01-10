@@ -230,7 +230,8 @@ body {
     position: relative;
     z-index: 1;
     max-width: 900px;
-    animation: fadeInUp 1s ease-out;
+    /* disable initial hero reveal so content appears immediately */
+    animation: none !important;
 }
 
 @keyframes fadeInUp {
@@ -256,7 +257,7 @@ body {
     font-weight: 600;
     color: var(--primary-blue);
     margin-bottom: 32px;
-    animation: fadeInUp 1s ease-out 0.2s both;
+    animation: none !important;
 }
 
 .badge-icon {
@@ -274,12 +275,10 @@ body {
 
 .title-line {
     display: block;
-    animation: fadeInUp 1s ease-out both;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
 }
-
-.title-line:nth-child(1) { animation-delay: 0.3s; }
-.title-line:nth-child(2) { animation-delay: 0.4s; }
-.title-line:nth-child(3) { animation-delay: 0.5s; }
 
 .title-line.highlight {
     color: var(--primary-blue);
@@ -293,14 +292,14 @@ body {
     color: var(--text-secondary);
     max-width: 700px;
     margin-bottom: 40px;
-    animation: fadeInUp 1s ease-out 0.6s both;
+    animation: none !important;
 }
 
 .hero-cta {
     display: flex;
     gap: 16px;
     margin-bottom: 64px;
-    animation: fadeInUp 1s ease-out 0.7s both;
+    animation: none !important;
 }
 
 .btn {
@@ -344,7 +343,14 @@ body {
     grid-template-columns: repeat(3, 1fr);
     gap: 48px;
     max-width: 600px;
-    animation: fadeInUp 1s ease-out 0.8s both;
+    animation: none !important;
+}
+
+/* Ensure other reveal elements are visible immediately */
+.capability-card, .why-card, .mission-card, .timeline-item, .client-logo-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
 }
 
 .stat {
