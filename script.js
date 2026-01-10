@@ -59,23 +59,64 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Disable scroll-triggered reveal animations: show elements immediately
-const showElementsImmediately = () => {
+// Intersection Observer for Fade-in Animations
+const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Animate elements on scroll
+const animateOnScroll = () => {
     const elements = document.querySelectorAll('.capability-card, .why-card, .mission-card, .timeline-item, .client-logo-item');
-    elements.forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-        el.style.transition = 'none';
+    
+    elements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        observer.observe(el);
     });
 };
 
+// Initialize animations after DOM is loaded
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', showElementsImmediately);
+    document.addEventListener('DOMContentLoaded', animateOnScroll);
 } else {
-    showElementsImmediately();
+    animateOnScroll();
 }
 
-// Scroll progress removed to avoid extra animation work
+// Add scroll progress indicator
+const createScrollProgress = () => {
+    const progressBar = document.createElement('div');
+    progressBar.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, #003B7A, #0066CC);
+        z-index: 9999;
+        transition: width 0.1s ease;
+    `;
+    document.body.appendChild(progressBar);
+    
+    window.addEventListener('scroll', () => {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.pageYOffset / windowHeight) * 100;
+        progressBar.style.width = scrolled + '%';
+    });
+};
+
+createScrollProgress();
 
 // Add hover effect to capability cards
 const capabilityCards = document.querySelectorAll('.capability-card');
@@ -144,8 +185,15 @@ if (hero && heroContent) {
     });
 }
 
-// Ensure body is visible immediately (remove slow load fade)
-if (document.body) document.body.style.opacity = '1';
+// Add loading animation
+window.addEventListener('load', () => {
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease';
+    
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});
 
 // Stats counter animation
 const animateStats = () => {
@@ -190,17 +238,50 @@ const animateStats = () => {
     stats.forEach(stat => statsObserver.observe(stat));
 };
 
-// Show stats immediately without counting animation
-const animateStats = () => {
-    const stats = document.querySelectorAll('.stat-number');
-    stats.forEach(s => {
-        // keep original text (already present in HTML) and ensure visible
-        s.style.opacity = '1';
-        s.style.transition = 'none';
-    });
+animateStats();
+
+// Add contact form validation (if form is added later)
+const validateEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 };
 
-animateStats();
+// Add accessibility improvements
+document.addEventListener('keydown', (e) => {
+    // Skip to main content on Tab
+    if (e.key === 'Tab' && !e.shiftKey && document.activeElement === document.body) {
+        const mainContent = document.querySelector('.hero');
+        if (mainContent) {
+            mainContent.focus();
+        }
+    }
+});
+
+// Add focus visible for keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+        document.body.classList.add('keyboard-nav');
+    }
+});
+
+document.addEventListener('mousedown', () => {
+    document.body.classList.remove('keyboard-nav');
+});
+
+// Enhanced focus styles for keyboard navigation
+const focusStyle = document.createElement('style');
+focusStyle.textContent = `
+    .keyboard-nav *:focus {
+        outline: 3px solid #0066CC;
+        outline-offset: 2px;
+    }
+`;
+document.head.appendChild(focusStyle);
+
+// Log page load time (for debugging)
+window.addEventListener('load', () => {
+    const loadTime = performance.now();
     console.log(`Page loaded in ${Math.round(loadTime)}ms`);
 });
 
