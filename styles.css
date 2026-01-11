@@ -702,7 +702,6 @@ body {
     transform: translateY(-4px) scale(1.05);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
-
 /* Clients Section */
 .clients-section {
     background: var(--warm-gray);
@@ -938,6 +937,31 @@ body {
 
 .contact-content a:hover {
     color: var(--accent-blue);
+}
+
+.btn-directions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: var(--primary-blue);
+    color: var(--white) !important;
+    font-size: 14px !important;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-directions:hover {
+    background: var(--dark-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-directions svg {
+    flex-shrink: 0;
 }
 
 .contact-content p {
